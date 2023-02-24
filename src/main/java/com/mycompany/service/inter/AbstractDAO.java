@@ -1,0 +1,44 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.service.inter;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+/**
+ *
+ * @author Umman Hasan DAO => Data Access Object
+ */
+public abstract class AbstractDAO {
+
+    public Connection connect() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/resume";
+        String username = "root";
+        String password = "";
+        Connection c = DriverManager.getConnection(url, username, password);
+        return c;
+    }
+
+    private static EntityManagerFactory emf = null;
+
+    public EntityManager em() {
+        if (emf == null) {
+            emf = Persistence.createEntityManagerFactory("resumeappPU");
+        }
+        
+        EntityManager entitymanager = emf.createEntityManager();
+
+        return entitymanager;
+    }
+    
+    public void close(){
+        emf.close();
+       
+    }
+}
